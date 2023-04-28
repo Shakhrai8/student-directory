@@ -115,7 +115,11 @@ end
 #assigned variable to our input method
 students = input_students
 #nothing happens until we call the methods
-#print_header
-#print(students)
-#print_footer(students)
-cohort_group(students)
+if students.empty?
+  puts "No students found"
+else
+  print_header
+  print(students)
+  print_footer(students)
+  cohort_group(students)
+end
