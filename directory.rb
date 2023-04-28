@@ -24,8 +24,8 @@ def print_header
 end
 #method for printing each student name from the array
 def print(names)
-  names.each do |name|
-    puts "--#{name[:name]} (#{name[:cohort]} cohort)"
+  names.each.with_index(1) do |name, index|
+    puts "#{index}.#{name[:name]} (#{name[:cohort]} cohort)"
   end
 end
 #method for printing total number of students

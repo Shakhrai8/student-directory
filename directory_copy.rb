@@ -48,7 +48,7 @@ def input_students
     @students << {name: name, cohort: cohort, birth: birth, hobby: hobby}
     puts "Now we have #{@students.count} students. Enter the next sudent or hit return to exit."
     #get another name from the user
-    name = gets.chomp
+    name = gets.chomp.capitalize
   end
   #return the array of students
   @students
@@ -66,7 +66,12 @@ def print(names)
       puts "#{index}.#{name[:name].center(16)}| cohort: #{name[:cohort].center(10)}| Country of birth: #{name[:birth].center(15)}| hobby: #{name[:hobby].center(15)}"
     #end
   end
-  #the next part of code is the same as each loop but made with until, method print_footer should be deleted if using until
+
+  #the next part of code is the same as each loop but made with until, 
+  #method print_footer should be deleted if using until.
+  #this block of code basically will print out our student info until the array will be empty, 
+  #names.pop is what takes it from the array and returns to us
+  
   #until names.empty?
     #name = names.pop
     #puts "#{name[:name]} #{name[:cohort]} cohort"
@@ -78,10 +83,34 @@ def print_footer(names)
   puts "-" * 100
   puts "Overall, we have #{names.count} great students".center(85)
 end
+#method to sort and print our students by the cohorts
+def cohort_group(names)
+  #creating new hash for groups
+  cohort_hash = {}
+  puts "Cohort groups"
+  names.each do |student|
+    #assigning key value pairs for the new hash
+    cohort = student[:cohort]
+    name = student[:name]
+    #if key(cohort) is empty pushes new names in 
+    if cohort_hash[cohort] == nil
+      cohort_hash[cohort] = [name]
+    else
+      cohort_hash[cohort].push(name)
+    end
+  end
+  #prints the results, key is cohort, value are names
+  cohort_hash.each do |key, value|
+    puts "-" * 50
+    puts "Cohort: #{key}"
+    puts value
+  end
+end
 
 #assigned variable to our input method
 students = input_students
 #nothing happens until we call the methods
-print_header
-print(students)
-print_footer(students)
+#print_header
+#print(@students)
+#print_footer(students)
+cohort_group(@students)
