@@ -23,7 +23,7 @@ def input_students
   puts "Please enter the name of the student"
   puts "To finish, just hit return twice"
   #create an empty array
-  @students = []
+  students = []
   #get the first name
   name = gets.delete("\n").capitalize
   #while the name is not empty, repeat this code
@@ -45,13 +45,18 @@ def input_students
       end
     end  
     #add the student hash to the array
-    @students << {name: name, cohort: cohort, birth: birth, hobby: hobby}
-    puts "Now we have #{@students.count} students. Enter the next sudent or hit return to exit."
+    students << {name: name, cohort: cohort, birth: birth, hobby: hobby}
+    #prints appropriative message for the student count
+    if students.count == 1
+      puts "Now we have #{students.count} student. Enter the next student or hit return to exit."
+    else
+      puts "Now we have #{students.count} students. Enter the next student or hit return to exit."
+    end  
     #get another name from the user
     name = gets.chomp.capitalize
   end
   #return the array of students
-  @students
+  students
 end
 #method for printing the header
 def print_header
@@ -111,6 +116,6 @@ end
 students = input_students
 #nothing happens until we call the methods
 #print_header
-#print(@students)
+#print(students)
 #print_footer(students)
-cohort_group(@students)
+cohort_group(students)
