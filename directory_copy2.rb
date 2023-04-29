@@ -1,5 +1,25 @@
 #create an empty array
 @students = []
+#method for checking if spelling of the month was correct
+def spelling(month)
+  #making an array for the months
+  month_array =[ 
+    "January", 
+    "February", 
+    "March", 
+    "April", 
+    "May", 
+    "June", 
+    "July", 
+    "August", 
+    "September", 
+    "October", 
+    "November", 
+    "December"
+  ]
+  #checking if the array includes our user unput, if yes returns true
+  month_array.include?(month)
+end
 #method for getting list of names from the user input into array
 def input_students
   puts "Please enter the names of the students"
@@ -8,13 +28,37 @@ def input_students
   name = STDIN.gets.chomp
   #while the name is not empty, repeat this code
   while !name.empty? do
+    puts "Please enter country of birth"
+    birth = STDIN.gets.chomp
+    puts "Please enter the hobby"
+    hobby = STDIN.gets.chomp
+    puts "Please enter the cohort"
+    cohort = STDIN.gets.chomp.capitalize 
+    #sets default month as a november if the user made no input
+    if cohort.empty?
+      cohort = "November" 
+    #if not empty its gonna ask user to correct their spelling until it equals any string from our spelling method
+    else
+      until spelling(cohort) == true
+        puts "Please make sure you have a correct spelling for the cohort!"
+        cohort = STDIN.gets.chomp.capitalize
+      end
+    end  
     #add the student hash to the array
-    @students << {name: name, cohort: :november}
-    puts "Now we have #{@students.count} students"
+    add_students(name, cohort, birth, hobby)
+    #prints appropriative message for the student count
+    if @students.count == 1
+      puts "Now we have #{@students.count} student. Enter the next student or hit return to exit."
+    else
+      puts "Now we have #{@students.count} students. Enter the next student or hit return to exit."
+    end  
     #get another name from the user
-    name = STDIN.gets.chomp
+    name = STDIN.gets.chomp.capitalize
   end
 end
+def add_students(name, cohort, birth, hobby)
+  @students << {name: name, cohort: cohort, birth: birth, hobby: hobby}
+end 
 #method for printing the header
 def print_header
   puts "The students of Villains Academy"
@@ -23,7 +67,7 @@ end
 #method for printing each student name from the array
 def print_students_list
   @students.each.with_index(1) do |name, index|
-    puts "#{index}.#{name[:name]} (#{name[:cohort]} cohort)"
+    puts "#{index}.#{name[:name].center(16)}| cohort: #{name[:cohort].center(10)}| Country of birth: #{name[:birth].center(15)}| hobby: #{name[:hobby].center(15)}"
   end
 end
 #method for printing total number of students
@@ -50,7 +94,7 @@ def save_students
   file = File.open("students.csv", "w")
   #iterate over the array of students
   @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
+    student_data = [student[:name], student[:cohort], student[:birth], student[:hobby]]
     csv_line = student_data.join(",")
     file.puts csv_line
   end
@@ -60,8 +104,8 @@ end
 def load_students(filename = "students.csv")
   file = File.open("students.csv", "r")
   file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    name, cohort, birth, hobby = line.chomp.split(',')
+    add_students(name, cohort, birth, hobby)
   end
   file.close
 end
@@ -77,7 +121,6 @@ def try_load_students
     exit #quit the program
   end
 end
-def 
 #method for selection
 def process(selection)
   case selection
