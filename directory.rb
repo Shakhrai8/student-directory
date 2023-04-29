@@ -32,10 +32,31 @@ end
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
-
-#assigned variable to our input method
-students = input_students
-#nothing happens until we call the methods
-print_header
-print(students)
-print_footer(students)
+#final method for our interactive menu which will call other methods 
+def interactive_menu
+  #Declared variable student again so it will be available in several iterations of the loop
+  students = []
+  loop do
+    # print the menu and ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    #read the input and save it into a variable
+    selection = gets.chomp
+    #do what the has asked
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit #this will cause the program to terminate
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
+end
+#nothing gonna happen until we call our method for the menu
+interactive_menu
