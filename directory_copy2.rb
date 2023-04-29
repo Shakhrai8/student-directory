@@ -98,7 +98,18 @@ def save_students
     csv_line = student_data.join(",")
     file.puts csv_line
   end
+  puts "File is saved successfully!"
   file.close
+end
+#method which asks user for input and if the input matches with our csv file it will be saved
+def saved_filename
+  savedfilename = STDIN.gets.chomp
+  if savedfilename == "students.csv"
+    #calling method for saving file
+    save_students
+  else 
+    puts "Incorrect file name, Please try again."
+  end
 end
 #method for loading files
 def load_students(filename = "students.csv")
@@ -127,12 +138,17 @@ def process(selection)
     when "1"
       input_students
     when "2"
+      puts "You have chosen to view the list of students."
       show_students
     when "3"
-      save_students
+      puts "Trying to save the file...."
+      puts "Please type students.csv in the terminal"
+      saved_filename
     when "4"
+      puts "File is loaded successfully!"
       load_students
     when "9"
+      puts "Exiting the program...."
       exit #this will cause the program to terminate
     else
       puts "I don't know what you meant, try again"
