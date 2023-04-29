@@ -1,3 +1,4 @@
+require 'csv'
 #create an empty array
 @students = []
 #method for checking if spelling of the month was correct
@@ -98,14 +99,13 @@ end
 def save_students
   #open the file for writing
   file = File.open("students.csv", "w")
+  CSV.open("students.csv", "wb") do |csv|
   #iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:birth], student[:hobby]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+    @students.each do |student|
+      csv << [student[:name], student[:cohort], student[:birth], student[:hobby]]
+    end
+    puts "File is saved successfully!"
   end
-  puts "File is saved successfully!"
-  file.close
 end
 #method which asks user for input and if the input matches with our csv file it will be saved
 def saved_filename
@@ -119,13 +119,15 @@ def saved_filename
 end
 #method for loading files
 def load_students(filename = "students.csv")
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-    name, cohort, birth, hobby = line.chomp.split(',')
-    add_students(name, cohort, birth, hobby)
+  #assigned variable students again because program kept adding loaded array to the existing one, with this command we gonna get only the loaded array
+  @students = []
+  file = File.open(filename, "r") do |file|
+    file.readlines.each do |line|
+      name, cohort, birth, hobby = line.chomp.split(',')
+      add_students(name, cohort, birth, hobby)
+    end
   end
-  puts "File is loaded successfully"
-  file.close
+    puts "File is loaded successfully"
 end
 #method which checks if the filename is correct before loading it
 def loaded_filename
