@@ -35,6 +35,12 @@ def input_students
     puts "Please enter the cohort"
     cohort = STDIN.gets.chomp.capitalize 
     #sets default month as a november if the user made no input
+    if birth.empty?
+      birth = "Unknown"
+    end
+    if hobby.empty?
+      hobby = "Unknown"
+    end
     if cohort.empty?
       cohort = "November" 
     #if not empty its gonna ask user to correct their spelling until it equals any string from our spelling method
@@ -67,7 +73,7 @@ end
 #method for printing each student name from the array
 def print_students_list
   @students.each.with_index(1) do |name, index|
-    puts "#{index}.#{name[:name].center(16)}| cohort: #{name[:cohort].center(10)}| Country of birth: #{name[:birth].center(15)}| hobby: #{name[:hobby].center(15)}"
+    puts "#{index}.#{name[:name].center(16)}| cohort: #{name[:cohort].center(10)}| Country of birth: #{name[:birth].center(10)}| hobby: #{name[:hobby].center(10)}"
   end
 end
 #method for printing total number of students
@@ -78,8 +84,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. Save the list to students.csv"
-  puts "4. Load the list from students.csv"
+  puts "3. Save the list"
+  puts "4. Load the list"
   puts "9. Exit"
 end
 #method for printing student list
@@ -118,7 +124,17 @@ def load_students(filename = "students.csv")
     name, cohort, birth, hobby = line.chomp.split(',')
     add_students(name, cohort, birth, hobby)
   end
+  puts "File is loaded successfully"
   file.close
+end
+#method which checks if the filename is correct before loading it
+def loaded_filename
+  loadedfilename = STDIN.gets.chomp
+  if loadedfilename == "students.csv"
+    load_students
+  else 
+    puts "Incoret filename. Please try again."
+  end
 end
 #method for loading the program with argument
 def try_load_students
@@ -142,11 +158,12 @@ def process(selection)
       show_students
     when "3"
       puts "Trying to save the file...."
-      puts "Please type students.csv in the terminal"
+      puts "Please type correct filename in the terminal"
       saved_filename
     when "4"
-      puts "File is loaded successfully!"
-      load_students
+      puts "Trying to load the file..."
+      puts "Please type correct filename in the terminal"
+      loaded_filename
     when "9"
       puts "Exiting the program...."
       exit #this will cause the program to terminate
